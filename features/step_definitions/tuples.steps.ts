@@ -71,18 +71,18 @@ defineFeature(feature, (test) => {
 		let regex_int = '[-0-9]+';
 		let mockVec: ITuple;
     	given(/^v = vector\((.*), (-.*), (.*)\)$/, (arg0, arg1, arg2) => {
-			let vecX = parseInt(arg0.match(regex_int)[0]);
-			let vecY = parseInt(arg1.match(regex_int)[0]);
-			let vecZ = parseInt(arg2.match(regex_int)[0]);
+			let vecX: number = parseInt(arg0.match(regex_int)[0]);
+			let vecY: number = parseInt(arg1.match(regex_int)[0]);
+			let vecZ: number = parseInt(arg2.match(regex_int)[0]);
 
 			mockVec = new Vector(vecX, vecY, vecZ);
 		});
 
     	then(/^v is equal to tuple\((.*), (-.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
-			let tupX = parseInt(arg0.match(regex_int)[0]);
-			let tupY = parseInt(arg1.match(regex_int)[0]);
-			let tupZ = parseInt(arg2.match(regex_int)[0]);
-			let tupW = parseInt(arg3.match(regex_int)[0]);
+			let tupX: number = parseInt(arg0.match(regex_int)[0]);
+			let tupY: number = parseInt(arg1.match(regex_int)[0]);
+			let tupZ: number = parseInt(arg2.match(regex_int)[0]);
+			let tupW: number = parseInt(arg3.match(regex_int)[0]);
 
 			let mockTuple: ITuple = new Tuple(tupX, tupY,tupZ,tupW);
 
@@ -97,23 +97,60 @@ defineFeature(feature, (test) => {
 		let mockPoint: ITuple;
 
 		given(/^p = point\((.*), -(.*), (.*)\)$/, (arg0, arg1, arg2) => {
-			let pointX = parseInt(arg0.match(regex_int)[0]);
-			let pointY = parseInt(arg1.match(regex_int)[0]);
-			let pointZ = parseInt(arg2.match(regex_int)[0]);
+			let pointX: number = parseInt(arg0.match(regex_int)[0]);
+			let pointY: number = parseInt(arg1.match(regex_int)[0]);
+			let pointZ: number = parseInt(arg2.match(regex_int)[0]);
 
 			mockPoint = new Point(pointX, pointY, pointZ);
 		});
 
     	then(/^p is equal to tuple\((.*), -(.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
-			let tupX = parseInt(arg0.match(regex_int)[0]);
-			let tupY = parseInt(arg1.match(regex_int)[0]);
-			let tupZ = parseInt(arg2.match(regex_int)[0]);
-			let tupW = parseInt(arg3.match(regex_int)[0]);
+			let tupX: number = parseInt(arg0.match(regex_int)[0]);
+			let tupY: number = parseInt(arg1.match(regex_int)[0]);
+			let tupZ: number = parseInt(arg2.match(regex_int)[0]);
+			let tupW: number = parseInt(arg3.match(regex_int)[0]);
 
 			let mockTuple: ITuple = new Tuple(tupX, tupY,tupZ,tupW);
 
 			expect(mockPoint.w).toEqual(1);
 			expect(equalTuples(mockPoint,mockTuple)).toBe(true);
     	});
+	});
+
+	test('Adding two tuples', ({ given, and, then }) => {
+
+		let regex = '[-0-9]+';
+		let tupleA: ITuple;
+		let tupleB: ITuple;
+		let tupleC: ITuple;
+
+    	given(/^a = tuple\((.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+			console.log(arg0,arg1,arg2,arg3);
+			let x: number = parseInt(arg0.match(regex)[0]);
+			let y: number = parseInt(arg1.match(regex)[0]);
+			let z: number = parseInt(arg2.match(regex)[0]);
+			let w: number = parseInt(arg3.match(regex)[0]);
+
+			tupleA = new Tuple(x,y,z,w);
+    	});
+
+    	and(/^b = tuple\((.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+			console.log(arg0,arg1,arg2, arg3);
+			let x: number = parseInt(arg0.match(regex)[0]);
+			let y: number = parseInt(arg1.match(regex)[0]);
+			let z: number = parseInt(arg2.match(regex)[0]);
+			let w: number = parseInt(arg3.match(regex)[0]);
+
+			tupleB = new Tuple(x,y,z,w);
+		});
+
+		then(/^a plus b = tuple\((.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+			console.log(arg0,arg1,arg2, arg3,);
+
+			 tupleC = tupleA.plus(tupleB);
+
+
+
+		});
     });
 });

@@ -30,6 +30,7 @@ export function equalTuples(a: ITuple, b: ITuple){
 }
 
 export interface ITuple {
+	plus(tupleB: ITuple): ITuple;
     x: number;
     y: number;
     z: number;
@@ -44,6 +45,12 @@ export class Tuple implements ITuple {
         this.w = W0;
     }
 
+    //Methods
+    plus(tupleB: ITuple): ITuple {
+        return new Tuple(this.x+tupleB.x,this.y+tupleB.y,this.z+tupleB.z,this.w+tupleB.w);
+    }
+
+    //Members
     public x: number;
     public y: number;
     public z: number;
@@ -52,6 +59,17 @@ export class Tuple implements ITuple {
 
 
 export class Point implements ITuple{
+    plus(tupleB: ITuple): ITuple {
+        //Point + Vector
+        if(tupleB.w === 0){
+            let t = new Tuple(this.x,this.y,this.z,this.w);
+            return t.plus(tupleB);
+        }
+        //Point + Point
+        if(tupleB.w === 1){
+            // Todo: Implement this.
+        }
+    }
     constructor(X0: number, Y0: number, Z0: number){
         this.x = X0;
         this.y = Y0;
@@ -65,6 +83,9 @@ export class Point implements ITuple{
 }
 
 export class Vector implements ITuple{
+    plus(tupleB: ITuple): ITuple {
+        throw new Error("Method not implemented.");
+    }
     constructor(X0: number, Y0: number, Z0: number){
         this.x = X0;
         this.y = Y0;

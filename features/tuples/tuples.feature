@@ -23,3 +23,8 @@ Feature: Tuples are points and vectors
     Scenario: point() creates tuples with w=1
         Given p = point(4, -4, 3)
         Then p is equal to tuple(4, -4, 3, 1)
+
+    Scenario: Adding two tuples
+        Given a = tuple(3, -2, 5, 1)
+        And b = tuple(-2, 3, 1, 0)
+        Then a plus b = tuple(1, 1, 6, 1)
