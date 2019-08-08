@@ -1,0 +1,24 @@
+{
+  "name": "ray_tracer",
+  "version": "1.0.0",
+  "description": "Ray Tracer Challenge",
+  "main": "index.js",
+  "author": "Ryan McKenna",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@babel/polyfill": "^7.4.4",
+    "jest-cucumber": "^2.0.11",
+    "typescript": "^3.5.3"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@types/jest": "^24.0.17",
+    "ts-jest": "^24.0.2"
+  }
+}
