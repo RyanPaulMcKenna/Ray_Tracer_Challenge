@@ -130,6 +130,9 @@ export class Point extends Tuple{
 }
 
 export class Vector extends Tuple{
+	public magnitude(): number {
+		return Math.sqrt(this.x^2+this.y^2+this.z^2);
+	}
 
     constructor(X0: number, Y0: number, Z0: number){
         super(X0,Y0,Z0, 0);

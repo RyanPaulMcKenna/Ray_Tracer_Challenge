@@ -452,14 +452,22 @@ defineFeature(feature, (test) => {
 			});
 		});
 
-
 		test('Computing the magnitude of vector(1, 0, 0)', ({ given, then }) => {
+
+			let vectorA: Vector;
+			const mag: number = 1;
 			given(/^v = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
-				pending();
+
+				vectorA = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
 			});
 
 			then(/^magnitude\(v\) = (.*)$/, (arg0) => {
-				pending();
+				const mockMag = parseInt(arg0);
+				const resultMag = vectorA.magnitude();
+				console.log(resultMag, mockMag);
+				expect(resultMag).toEqual(mockMag);
+
 			});
 		});
 
