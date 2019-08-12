@@ -1,9 +1,12 @@
 import { loadFeature, defineFeature} from 'jest-cucumber';
-import { ITuple, Tuple, equalTuples, Point, Vector } from '../../../src/functions/utils';
+import { ITuple, Tuple, equalTuples,dot, cross, Point, Vector, IColour, Colour, equalColours } from '../../../src/functions/utils';
 
 const feature = loadFeature('../../tuples/tuples.feature', {loadRelativePath: true});
 
-let regexFpArr = '[-0-9., ]+';
+interface ITupleTableRow {
+	TupleName: string;
+	Value: string;
+}
 
 defineFeature(feature, (test) => {
 
@@ -15,17 +18,14 @@ defineFeature(feature, (test) => {
 		let tupleAz: number;
 		let tupleAw: number;
 
-    	given(/^A tuple a = (.*)$/, (arg0, table) => {
+    	given('A tuple a = "<Value>"', (table: ITupleTableRow[]) => {
 
-			let temp = table[0].Value.match(regexFpArr)[0];
-			let stringArr = temp.split(',');
-			let numArr = [0,0,0,0];
+			let x = JSON.parse(table[0].Value)[0];
+			let y = JSON.parse(table[0].Value)[1];
+			let z = JSON.parse(table[0].Value)[2];
+			let w = JSON.parse(table[0].Value)[3];
 
-			for (let index = 0; index < stringArr.length; index++ ){
-				numArr[index] = parseFloat(stringArr[index]);
-			}
-
-			tupleA = new Tuple(numArr[0],numArr[1],numArr[2],numArr[3]);
+			tupleA = new Tuple(x,y,z,w);
     	});
 
     	when('When I access the properties of a', () => {
@@ -95,7 +95,7 @@ defineFeature(feature, (test) => {
 
 		let mockPoint: ITuple;
 
-		given(/^p = point\((.*), -(.*), (.*)\)$/, (arg0, arg1, arg2) => {
+		given(/^p = point\((.*), (-.*), (.*)\)$/, (arg0, arg1, arg2) => {
 			let pointX: number = parseInt(arg0);
 			let pointY: number = parseInt(arg1);
 			let pointZ: number = parseInt(arg2);
@@ -103,7 +103,7 @@ defineFeature(feature, (test) => {
 			mockPoint = new Point(pointX, pointY, pointZ);
 		});
 
-    	then(/^p is equal to tuple\((.*), -(.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+    	then(/^p is equal to tuple\((.*), (-.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
 			let tupX: number = parseInt(arg0);
 			let tupY: number = parseInt(arg1);
 			let tupZ: number = parseInt(arg2);
@@ -465,49 +465,297 @@ defineFeature(feature, (test) => {
 			then(/^magnitude\(v\) = (.*)$/, (arg0) => {
 				const mockMag = parseInt(arg0);
 				const resultMag = vectorA.magnitude();
-				console.log(resultMag, mockMag);
-				expect(resultMag).toEqual(mockMag);
 
+				expect(resultMag).toEqual(mockMag);
+				expect(resultMag).toEqual(mag);
 			});
 		});
 
 		test('Computing the magnitude of vector(0, 1, 0)', ({ given, then }) => {
+			let vectorA: Vector;
+			const mag: number = 1;
 			given(/^v = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
-				pending();
+				vectorA = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
 			});
 
 			then(/^magnitude\(v\) = (.*)$/, (arg0) => {
-				pending();
+				const mockMag = parseInt(arg0);
+				const resultMag = vectorA.magnitude();
+
+				expect(resultMag).toEqual(mockMag);
+				expect(resultMag).toEqual(mag);
 			});
 		});
 
 		test('Computing the magnitude of vector(0, 0, 1)', ({ given, then }) => {
+			let vectorA: Vector;
+			const mag: number = 1;
 			given(/^v = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
-				pending();
+				vectorA = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
 			});
 
 			then(/^magnitude\(v\) = (.*)$/, (arg0) => {
-				pending();
+				const mockMag = parseInt(arg0);
+				const resultMag = vectorA.magnitude();
+
+				expect(resultMag).toEqual(mockMag);
+				expect(resultMag).toEqual(mag);
 			});
 		});
 
 		test('Computing the magnitude of vector(1, 2, 3)', ({ given, then }) => {
+			let vectorA: Vector;
+			const mag: number = Math.sqrt(14);
 			given(/^v = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
-				pending();
+				vectorA = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
 			});
 
 			then(/^magnitude\(v\) = √(.*)$/, (arg0) => {
-				pending();
+				const mockMag = Math.sqrt(parseInt(arg0));
+				const resultMag = vectorA.magnitude();
+
+				expect(resultMag).toEqual(mockMag);
+				expect(resultMag).toEqual(mag);
 			});
 		});
 
 		test('Computing the magnitude of vector(-1, -2, -3)', ({ given, then }) => {
+			let vectorA: Vector;
+			const mag: number = Math.sqrt(14);
 			given(/^v = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
-				pending();
+				vectorA = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
 			});
 
 			then(/^magnitude\(v\) = √(.*)$/, (arg0) => {
-				pending();
+				const mockMag = Math.sqrt(parseInt(arg0));
+				const resultMag = vectorA.magnitude();
+
+				expect(resultMag).toEqual(mockMag);
+				expect(resultMag).toEqual(mag);
+			});
+		});
+
+		test('Normalizing vector(4, 0, 0) gives (1, 0, 0)', ({ given, then }) => {
+
+			let vectorA: Vector;
+			let mockNorm: Vector;
+			given(/^v = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				vectorA = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+			});
+
+			then(/^normalize\(v\) = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				mockNorm = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+				let normA = vectorA.normalize();
+
+				expect(normA).toEqual(mockNorm);
+			});
+		});
+
+
+
+		test('Normalizing vector(1, 2, 3)', ({ given, then }) => {
+			let vectorA: Vector;
+			let mockNorm: Vector;
+
+			given(/^v = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+				vectorA = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+			});
+
+			then(/^normalize\(v\) = approximately vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+				mockNorm = new Vector(parseFloat(arg0),parseFloat(arg1),parseFloat(arg2));
+
+				let normA = vectorA.normalize();
+
+				expect(equalTuples(normA,mockNorm));
+			});
+		});
+
+
+
+		test('The magnitude of a normalized vector', ({ given, when, then }) => {
+			let vectorA: Vector;
+			let mockNorm: Vector;
+
+			given(/^v = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				vectorA = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+			});
+
+			when('norm = normalize(v)', () => {
+				mockNorm = vectorA.normalize();
+			});
+
+			then(/^magnitude\(norm\) = (.*)$/, (arg0) => {
+				let magnitude = parseInt(arg0);
+				let normMag = mockNorm.magnitude();
+
+				expect(normMag).toEqual(magnitude);
+				expect(normMag).toEqual(1);
+
+
+			});
+		});
+
+		test('The dot product of two tuples', ({ given, and, then }) => {
+			let vectorA: Vector;
+			let vectorB: Vector;
+
+			given(/^a = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				vectorA = new Vector(parseInt(arg0),parseInt(arg1), parseInt(arg2));
+			});
+
+			and(/^b = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				vectorB = new Vector(parseInt(arg0),parseInt(arg1), parseInt(arg2));
+			});
+
+			then(/^dot\(a, b\) = (.*)$/, (arg0) => {
+				let mockDotProduct = parseInt(arg0);
+				let dotProduct: number = dot(vectorA,vectorB);
+
+				expect(dotProduct).toEqual(mockDotProduct);
+			});
+		});
+
+	    test('The cross product of two vectors', ({ given, and, then }) => {
+			let vecA: Vector;
+			let vecB: Vector;
+			let crossAb: Vector;
+			let crossBa: Vector;
+			given(/^a = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				vecA = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+			});
+
+			and(/^b = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				vecB = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+			});
+
+			then(/^cross\(a, b\) = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				let mockCrossAb = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+				crossAb = cross(vecA,vecB);
+				expect(crossAb).toEqual(mockCrossAb);
+			});
+
+			and(/^cross\(b, a\) = vector\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				let mockCrossBa = new Vector(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+				crossBa = cross(vecB,vecA);
+				expect(crossBa).toEqual(mockCrossBa);
+			});
+		});
+
+		test('Colours are (red, green, blue) tuples', ({ given, then, and }) => {
+
+			let colourC: IColour;
+			given(/^c = colour\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				colourC = new Colour(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+			});
+
+			then(/^c.red = (.*)$/, (arg0) => {
+				expect(colourC.red).toEqual(parseInt(arg0));
+			});
+
+			and(/^c.green = (.*)$/, (arg0) => {
+				expect(colourC.green).toEqual(parseInt(arg0));
+			});
+
+			and(/^c.blue = (.*)$/, (arg0) => {
+				expect(colourC.blue).toEqual(parseInt(arg0));
+			});
+		});
+
+		test('Adding colours', ({ given, and, then }) => {
+			let colourA: IColour;
+			let colourB: IColour;
+
+			given(/^a = colour\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				colourA =  new Colour(parseFloat(arg0),parseFloat(arg1),parseFloat(arg2));
+
+			});
+
+			and(/^b = colour\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				colourB = new Colour(parseFloat(arg0),parseFloat(arg1),parseFloat(arg2));
+
+			});
+
+			then(/^a plus b = colour((.*), (.*), (.*))/, (arg0) => {
+
+				let regex = '[-0-9., ]+';
+				let array = arg0.match(regex)[0].split(',').map(x => parseFloat(x));;
+
+				let mockColour = new Colour(array[0],array[1],array[2]);
+				let colourC = colourA.plus(colourB);
+
+				expect(colourC).toEqual(mockColour);
+			});
+		});
+
+		test('Subtracting colours', ({ given, and, then }) => {
+			let colourA: IColour;
+			let colourB: IColour;
+			given(/^a = colour\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				colourA =  new Colour(parseFloat(arg0),parseFloat(arg1),parseFloat(arg2));
+			});
+
+			and(/^b = colour\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				colourB =  new Colour(parseFloat(arg0),parseFloat(arg1),parseFloat(arg2));
+			});
+
+			then(/^a - b = colour\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				let mockColour = new Colour(parseFloat(arg0), parseFloat(arg1), parseFloat(arg2));
+				let colourC = colourA.sub(colourB);
+
+				expect(equalColours(colourC, mockColour)).toBe(true);
+
+			});
+		});
+
+		test('Multiplying a colour by a scalar', ({ given, then }) => {
+
+			let colourA: IColour;
+			let colourC: IColour;
+
+			given(/^c = colour\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				colourA = new Colour(arg0,arg1,arg2);
+			});
+
+			then(/^c * (.*) = colour\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+				colourC = new Colour(parseFloat(arg1),parseFloat(arg2),parseFloat(arg3));
+				let scalar = parseInt(arg0);
+
+				let colourB = colourA.scale(scalar);
+
+				expect(equalColours(colourC, colourB));
+			});
+		});
+
+		test('Multiplying colors', ({ given, and, then }) => {
+
+			let colourA: IColour;
+			let colourB: IColour;
+			let colourC: IColour;
+
+			given(/^a = color\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				colourA = new Colour(parseFloat(arg0),parseFloat(arg1),parseFloat(arg2));
+
+			});
+
+			and(/^b = color\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				colourB = new Colour(parseFloat(arg0),parseFloat(arg1),parseFloat(arg2));
+
+			});
+
+			then(/^a times b = color\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+				colourC = new Colour(parseFloat(arg0),parseFloat(arg1),parseFloat(arg2));
+
+				expect(equalColours(colourA.multiply(colourB),colourC)).toBe(true);
 			});
 		});
 

@@ -77,12 +77,64 @@ Feature: Tuples are points and vectors
     Scenario: Computing the magnitude of vector(0, 1, 0)
         Given v = vector(0, 1, 0)
         Then magnitude(v) = 1
+
     Scenario: Computing the magnitude of vector(0, 0, 1)
         Given v = vector(0, 0, 1)
         Then magnitude(v) = 1
+
     Scenario: Computing the magnitude of vector(1, 2, 3)
         Given v = vector(1, 2, 3)
         Then magnitude(v) = √14
+
     Scenario: Computing the magnitude of vector(-1, -2, -3)
         Given v = vector(-1, -2, -3)
         Then magnitude(v) = √14
+
+    Scenario: Normalizing vector(4, 0, 0) gives (1, 0, 0)
+        Given v = vector(4, 0, 0)
+        Then normalize(v) = vector(1, 0, 0)
+
+    Scenario: Normalizing vector(1, 2, 3)
+        Given v = vector(1, 2, 3)
+        Then normalize(v) = approximately vector(0.26726, 0.53452, 0.80178)
+
+    Scenario: The magnitude of a normalized vector
+        Given v = vector(1, 2, 3)
+        When norm = normalize(v)
+        Then magnitude(norm) = 1
+
+    Scenario: The dot product of two tuples
+        Given a = vector(1, 2, 3)
+        And b = vector(2, 3, 4)
+        Then dot(a, b) = 20
+
+    Scenario: The cross product of two vectors
+        Given a = vector(1, 2, 3)
+        And b = vector(2, 3, 4)
+        Then cross(a, b) = vector(-1, 2, -1)
+        And cross(b, a) = vector(1, -2, 1)
+
+    Scenario: Colours are (red, green, blue) tuples
+        Given c = colour(-0.5, 0.4, 1.7)
+        Then c.red = -0.5
+        And c.green = 0.4
+        And c.blue = 1.7
+
+    Scenario: Adding colours
+        Given a = colour(0.9, 0.6, 0.75)
+        And b = colour(0.7, 0.1, 0.25)
+        Then a plus b = colour(1.6, 0.7, 1.0)
+
+    Scenario: Subtracting colours
+        Given a = colour(0.9, 0.6, 0.75)
+        And b = colour(0.7, 0.1, 0.25)
+        Then a - b = colour(0.2, 0.5, 0.5)
+
+    Scenario: Multiplying a colour by a scalar
+        Given c = colour(0.2, 0.3, 0.4)
+        Then c * 2 = colour(0.4, 0.6, 0.8)
+
+    Scenario: Multiplying colors
+        Given a = color(1, 0.2, 0.4)
+        And b = color(0.9, 1, 0.1)
+        Then a times b = color(0.9, 0.2, 0.04)

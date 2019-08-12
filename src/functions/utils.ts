@@ -1,6 +1,14 @@
-import { AssertionError } from "assert";
+export function cross(a, b){
 
-export function equal(a: number, b: number){
+    return new Vector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
+
+}
+export function dot(a: Vector, b: Vector): number{
+
+    return  a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+}
+
+export function equal(a: number, b: number): Boolean{
 
     let EPSILON = 0.00001;
     let diff = a -b;
@@ -16,7 +24,8 @@ export function equal(a: number, b: number){
 
 }
 
-export function equalTuples(a: ITuple, b: ITuple){
+
+export function equalTuples(a: Tuple, b: Tuple): Boolean{
 
     if(
         equal(a.x,b.x) &&
@@ -28,6 +37,61 @@ export function equalTuples(a: ITuple, b: ITuple){
     }else{
         return false;
     }
+
+}
+
+export function equalColours(a: IColour, b: IColour): Boolean{
+
+    if(
+        equal(a.red,b.red) &&
+        equal(a.green,b.green) &&
+        equal(a.blue,b.blue)){
+
+        return true;
+    }else{
+        return false;
+    }
+}
+
+export interface IColour {
+	multiply(colourB: IColour): IColour;
+	scale(scalar: number);
+    sub(PointB: IColour): IColour;
+	plus(tupleB: IColour): IColour;
+    red: number;
+    green: number;
+    blue: number;
+}
+
+
+export class Colour implements IColour{
+
+    constructor(red: number,green: number,blue: number){
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+    }
+
+    multiply(c: IColour): IColour{
+        return new Colour(this.red*c.red,this.green*c.green,this.blue*c.blue);
+    }
+
+    scale(n: number): IColour{
+        return new Colour(this.red * n, this.green * n,this.blue * n);
+    }
+
+    sub(colour: IColour): IColour {
+        return new Colour(this.red-colour.red,this.green-colour.green,this.blue-colour.blue);
+    }
+
+    plus(colour: IColour): IColour {
+        return new Colour(this.red+colour.red,this.green+colour.green,this.blue+colour.blue);
+    }
+
+    red: number;
+    green: number;
+    blue: number;
+
 
 }
 
@@ -130,8 +194,19 @@ export class Point extends Tuple{
 }
 
 export class Vector extends Tuple{
+
 	public magnitude(): number {
-		return Math.sqrt(this.x^2+this.y^2+this.z^2);
+        let xSqr = Math.pow(this.x,2);
+        let ySqr = Math.pow(this.y,2);
+        let zSqr = Math.pow(this.z,2);
+        let wSqr = Math.pow(this.w,2);
+
+        return Math.sqrt(xSqr+ySqr+zSqr+wSqr);
+	}
+
+    normalize(): Vector {
+        let magnitude =  this.magnitude();
+        return new Vector(this.x/magnitude,this.y/magnitude,this.z/magnitude);
 	}
 
     constructor(X0: number, Y0: number, Z0: number){
