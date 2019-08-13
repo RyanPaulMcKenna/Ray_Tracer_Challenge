@@ -2,17 +2,25 @@
   "name": "ray_tracer",
   "version": "1.0.0",
   "description": "Ray Tracer Challenge",
-  "main": "index.js",
   "author": "Ryan McKenna",
   "license": "MIT",
   "private": true,
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "@types/react": "^16.9.1",
+    "@types/react-dom": "^16.8.5",
     "jest-cucumber": "^2.0.11",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-scripts": "^3.1.0",
     "typescript": "^3.5.3"
   },
   "scripts": {
-    "test": "jest"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test:react": "react-scripts test",
+    "test": "jest",
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -20,5 +28,17 @@
     "@babel/preset-env": "^7.5.5",
     "@types/jest": "^24.0.17",
     "ts-jest": "^24.0.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
