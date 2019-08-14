@@ -1,7 +1,5 @@
 import { Canvas, ICanvas } from "../utils/canvas/canvas";
 import { Point, Vector, IColour } from "../utils/functions/utils";
-import { isParenthesizedExpression } from "@babel/types";
-
 
 export interface IProjectile{
     position: Point;    velocity: Vector;
@@ -40,8 +38,6 @@ export function tick(env: Environment, proj: Projectile): Projectile{
     return new Projectile(position, velocity);
 
 }
-
-
 
 export interface IPath{
 

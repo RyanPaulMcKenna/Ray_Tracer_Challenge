@@ -2,7 +2,7 @@ import React from 'react'
 // @ts-ignore
 import { CanvasDisplay } from './CanvasDisplay.tsx';
 import  { ICanvas, Canvas } from '../utils/canvas/canvas';
-import { trajectory, Environment, Projectile, IEnvironment, IProjectile } from '../drawings/projectile';
+import { trajectory, Environment, Projectile, IEnvironment, IProjectile } from '../physics/projectile';
 import { Vector, Point, IColour, Colour } from '../utils/functions/utils';
 
 
