@@ -1,6 +1,7 @@
 import { loadFeature, defineFeature} from 'jest-cucumber';
-import { ICanvas, Canvas} from '../../../utils/canvas/canvas';
-import { IColour, Colour} from '../../../utils/functions/utils';
+import { ICanvas, Canvas} from '../../../src/utils/canvas/canvas';
+import { IColour, Colour} from '../../../src/utils/functions/utils';
+
 
 const feature = loadFeature('../../canvas/canvas.feature', {loadRelativePath: true});
 

@@ -1,5 +1,5 @@
 import { loadFeature, defineFeature} from 'jest-cucumber';
-import { ITuple, Tuple, equalTuples,dot, cross, Point, Vector, IColour, Colour, equalColours } from '../../../src/functions/utils';
+import { ITuple, Tuple, equalTuples,dot, cross, Point, Vector, IColour, Colour, equalColours } from '../../../src/utils/functions/utils';
 
 const feature = loadFeature('../../tuples/tuples.feature', {loadRelativePath: true});
 
@@ -688,7 +688,7 @@ defineFeature(feature, (test) => {
 			then(/^a plus b = colour((.*), (.*), (.*))/, (arg0) => {
 
 				let regex = '[-0-9., ]+';
-				let array = arg0.match(regex)[0].split(',').map(x => parseFloat(x));;
+				let array = arg0.match(regex)[0].split(',').map((x: string) => parseFloat(x));;
 
 				let mockColour = new Colour(array[0],array[1],array[2]);
 				let colourC = colourA.plus(colourB);

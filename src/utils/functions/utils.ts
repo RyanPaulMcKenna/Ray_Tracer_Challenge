@@ -55,7 +55,7 @@ export function equalColours(a: IColour, b: IColour): Boolean{
 
 export interface IColour {
 	multiply(colourB: IColour): IColour;
-	scale(scalar: number);
+	scale(scalar: number): IColour;
     sub(PointB: IColour): IColour;
 	plus(tupleB: IColour): IColour;
     red: number;
@@ -146,8 +146,12 @@ export class Tuple implements ITuple {
 
 
 export class Point extends Tuple{
-    constructor(X0: number, Y0: number, Z0: number){
-        super(X0,Y0,Z0,1);
+    constructor(x: number, y: number, z: number){
+        super(x,y,z,1);
+        this.x=x;
+        this.y=y;
+        this.z=z;
+        this.w=1;
     }
 
     public x: number;
@@ -169,6 +173,9 @@ export class Point extends Tuple{
         if(tupleB.w === 1){
             throw new Error('Illegal operation: Can\'t add a Point to another Point.');
         }
+
+        //This should never run
+        return new Tuple(0,0,0,0);
     }
 
     public sub(pointB: ITuple): ITuple {
@@ -188,6 +195,9 @@ export class Point extends Tuple{
 
             return new Point(t3.x,t3.y,t3.z);
         }
+
+        // This should never run
+        return new Tuple(0,0,0,0);
 
     }
 
@@ -209,8 +219,13 @@ export class Vector extends Tuple{
         return new Vector(this.x/magnitude,this.y/magnitude,this.z/magnitude);
 	}
 
-    constructor(X0: number, Y0: number, Z0: number){
-        super(X0,Y0,Z0, 0);
+    constructor(x: number, y: number, z: number){
+        super(x,y,z, 0);
+        this.x=x;
+        this.y=y;
+        this.z =z;
+        this.w=0;
+
     }
 
     public x: number;

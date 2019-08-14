@@ -1,0 +1,23 @@
+#container{
+    border: 1px  solid black;
+    position:fixed;
+    top: 4%;
+    left: 35%;
+}
+
+.row{
+    /* border: 1px solid black; */
+    float: left;
+}
+
+
+.column{
+    /* border: 1px solid black; */
+}
+
+
+/* .pixel{
+
+
+
+} */
