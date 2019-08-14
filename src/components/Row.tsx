@@ -14,7 +14,7 @@ export class Row extends React.Component<IRowProps>{
     public render(){
         return(
         <div className="row">
-               {this.props.row.map((pixel: IColour,index: number) => <Column key={index+20} pixel={pixel} /> )}
+               {this.props.row.map((pixel: IColour,index: number) => <Column key={index+1000} pixel={pixel} /> )}
 
         </div>
         );

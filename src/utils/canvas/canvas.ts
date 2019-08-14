@@ -2,16 +2,16 @@ import { IColour, Colour } from "../functions/utils";
 
 
 export interface ICanvas{
-    pixelAt(canvas: ICanvas, row: number, col: number): IColour;
-    writePixel(canvas: ICanvas, row: number, col: number, colour: IColour): void;
-    getCanvas(): IColour[][];
+    pixelAt(row: number, col: number): IColour;
+    writePixel(row: number, col: number, colour: IColour): Canvas;
     width: number;
     height: number;
     canvas: IColour[][];
 }
 
 export class Canvas implements ICanvas{
-    pixelAt(canvas: ICanvas, row: number, col: number): IColour {
+
+    pixelAt(row: number, col: number): IColour {
         return this.canvas[row][col];
     }
 
@@ -25,27 +25,24 @@ export class Canvas implements ICanvas{
 
         let canvas = new Array(this.height);
         let black: IColour = new Colour(0,0,0);
-        let temp = new Array(this.width);
 
 
-        for(let row = 0; row < this.height; row++){
+        for(let col = 0; col < this.height; col++){
 
-            canvas[row] = temp;
+            canvas[col] = [];
 
-            for(let col = 0; col < this.width; col++){
-                canvas[row][col] = black;
+            for(let row = 0; row < this.width; row++){
+                canvas[col].push(black);
+
             }
         }
 
         this.canvas = canvas;
     }
 
-    getCanvas(): IColour[][]{
-        return this.canvas;
-    }
+    writePixel(col: number, row:number, colour: IColour): ICanvas {
 
-    writePixel(canvas: ICanvas, row: number, col: number, colour: IColour): void {
-
-        this.canvas[row][col] = colour;
+        this.canvas[col][row] = colour;
+        return this
     }
 }

@@ -166,16 +166,10 @@ export class Point extends Tuple{
     public plus(tupleB: ITuple): ITuple {
         // Point + Vector
         if(tupleB.w === 0){
-            let t = new Tuple(this.x,this.y,this.z,this.w);
-            return t.plus(tupleB);
-        }
-        // Point + Point
-        if(tupleB.w === 1){
-            throw new Error('Illegal operation: Can\'t add a Point to another Point.');
+           return new Point(this.x+tupleB.x,this.y+tupleB.y,this.z+tupleB.z);
         }
 
-        //This should never run
-        return new Tuple(0,0,0,0);
+        throw new Error('Illegal operation: Can\'t add a Point to another Point.');
     }
 
     public sub(pointB: ITuple): ITuple {
@@ -214,7 +208,16 @@ export class Vector extends Tuple{
         return Math.sqrt(xSqr+ySqr+zSqr+wSqr);
 	}
 
-    normalize(): Vector {
+
+    public plus(vector: Vector): Vector {
+        return new Vector(this.x+vector.x,this.y+vector.y, this.z+vector.z);
+    }
+
+    public sub(tupleB: Vector): Vector {
+        return new Vector(this.x-tupleB.x,this.y-tupleB.y,this.z-tupleB.z);
+     }
+
+    public normalize(): Vector {
         let magnitude =  this.magnitude();
         return new Vector(this.x/magnitude,this.y/magnitude,this.z/magnitude);
 	}

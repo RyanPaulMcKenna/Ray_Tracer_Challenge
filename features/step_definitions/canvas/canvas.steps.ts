@@ -44,7 +44,7 @@ defineFeature(feature, (test) => {
         ];
             expect(typeof canvas.canvas).toBe(typeof mockCanvas);
             expect(black).toEqual(new Colour(parseInt(arg0),parseInt(arg1),parseInt(arg2)))
-            expect(canvas.getCanvas()).toEqual(mockCanvas);
+            expect(canvas.canvas).toEqual(mockCanvas);
             });
 
             test('Writing pixels to a canvas', ({ given, and, when, then }) => {
@@ -53,18 +53,21 @@ defineFeature(feature, (test) => {
                     let red: IColour;
                     given(/^c = canvas\((.*), (.*)\)$/, (arg0, arg1) => {
                         canvas = new Canvas(parseInt(arg0),parseInt(arg1));
+
                     });
 
                     and(/^red = color\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
                         red = new Colour(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
                     });
 
                     when(/^writePixel\(c, (.*), (.*), red\)$/, (arg0, arg1) => {
-                        canvas.writePixel(canvas, parseInt(arg0), parseInt(arg1), red);
+                        canvas.writePixel( parseInt(arg0), parseInt(arg1), red);
+
                     });
 
                     then(/^pixelAt\(c, (.*), (.*)\) = red$/, (arg0, arg1) => {
-                        let mockPixel: IColour = canvas.pixelAt(canvas, parseInt(arg0), parseInt(arg1));
+                        let mockPixel: IColour = canvas.pixelAt(parseInt(arg0), parseInt(arg1));
 
                         expect(mockPixel).toEqual(red);
                     });
