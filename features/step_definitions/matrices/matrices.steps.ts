@@ -1,5 +1,5 @@
 import { loadFeature, defineFeature} from 'jest-cucumber';
-import { IMatrix, Matrix } from '../../../src/utils/matrices/matrices';
+import { IMatrix, Matrix, equalMatrices, multiply } from '../../../src/utils/matrices/matrices';
 
 const feature = loadFeature('../../matrices/matrices.feature', {loadRelativePath: true});
 
@@ -11,19 +11,17 @@ defineFeature(feature, (test) => {
         let matrix: IMatrix;
 
         given(/^the following 4x4 matrix M:$/, (table) => {
-            let mat = new Array(4);
+            matrix = new Matrix(table.length,table.length,0);
 
-            for (let row = 0; row < 4; row++ ){
+            for (let row = 0; row < table.length; row++ ){
+                 for (let col = 0; col < table.length; col++ ){
 
-                 mat[row] = [0,0,0,0];
-
-                 for (let col = 0; col < 4; col++ ){
-                    mat[row][col] = parseFloat(table[row.toString()][col]);
+                    matrix.matrix[row][col] = parseFloat(table[row.toString()][col]);
 
                 }
             }
 
-            matrix = new Matrix(mat);
+
     	});
 
     	then("M[0,0] = 1", () => {
@@ -55,71 +53,209 @@ defineFeature(feature, (test) => {
     	});
     });
 
+
+
     test('A 2x2 matrix ought to be representable', ({ given, then, and }) => {
-    	given(/^the following (.*)x(.*) matrix M:$/, (arg0, arg1, table) => {
-            pending();
+
+        let matrix: IMatrix;
+
+    	given(/^the following 2x2 matrix M:$/, (table) => {
+
+            matrix = new Matrix(table.length,table.length,0);
+
+            for (let row = 0; row < table.length; row++ ){
+                 for (let col = 0; col < table.length; col++ ){
+
+                    matrix.matrix[row][col] = parseFloat(table[row.toString()][col]);
+
+                }
+            }
+
+
     	});
 
     	then("M[0,0] = -3", () => {
-            pending();
+            expect(matrix.matrix[0][0]).toEqual(-3);
     	});
 
     	and("M[0,1] = 5", () => {
-            pending();
+            expect(matrix.matrix[0][1]).toEqual(5);
     	});
 
     	and("M[1,0] = 1", () => {
-            pending();
+            expect(matrix.matrix[1][0]).toEqual(1);
     	});
 
     	and("M[1,1] = -2", () => {
-            pending();
+            expect(matrix.matrix[1][1]).toEqual(-2);
     	});
     });
 
     test('A 3x3 matrix ought to be representable', ({ given, then, and }) => {
-    	given(/^the following (.*)x(.*) matrix M:$/, (arg0, arg1, table) => {
-            pending();
+
+        let matrix: IMatrix;
+
+    	given(/^the following 3x3 matrix M:$/, (table) => {
+
+            matrix = new Matrix(table.length,table.length,0);
+
+            for (let row = 0; row < table.length; row++ ){
+                 for (let col = 0; col < table.length; col++ ){
+
+                    matrix.matrix[row][col] = parseFloat(table[row.toString()][col]);
+
+                }
+            }
+
     	});
 
     	then("M[0,0] = -3", () => {
-            pending();
+            expect(matrix.matrix[0][0]).toEqual(-3);
     	});
 
     	and("M[1,1] = -2", () => {
-            pending();
+            expect(matrix.matrix[1][1]).toEqual(-2);
     	});
 
     	and("M[2,2] = 1", () => {
-            pending();
+            expect(matrix.matrix[2][2]).toEqual(1);
     	});
     });
 
     test('Matrix equality with identical matrices', ({ given, and, then }) => {
+
+        let matrixA: IMatrix;
+        let matrixB: IMatrix;
+
     	given('the following matrix A:', (table) => {
-            pending();
+            matrixA = new Matrix(table.length,table.length,0);
+
+            for (let row = 0; row < table.length; row++ ){
+
+                 for (let col = 0; col < table.length; col++ ){
+                    matrixA.matrix[row][col] = parseFloat(table[row.toString()][col]);
+
+                }
+            }
+
     	});
 
     	and('the following matrix B:', (table) => {
-            pending();
+            matrixB = new Matrix(table.length,table.length,0);
+
+            for (let row = 0; row < table.length; row++ ){
+
+                 for (let col = 0; col < table.length; col++ ){
+                    matrixB.matrix[row][col] = parseFloat(table[row.toString()][col]);
+
+                }
+            }
+
     	});
 
     	then('A = B', () => {
-            pending();
+
+            expect(equalMatrices(matrixA,matrixB)).toBe(true);
     	});
     });
 
     test('Matrix equality with different matrices', ({ given, and, then }) => {
+
+        let matrixA: IMatrix;
+        let matrixB: IMatrix;
+
     	given('the following matrix A:', (table) => {
-            pending();
-    	});
+
+            matrixA = new Matrix(table.length,table.length,0);
+
+            for (let row = 0; row < table.length; row++ ){
+                 for (let col = 0; col < table.length; col++ ){
+
+                    matrixA.matrix[row][col] = parseFloat(table[row.toString()][col]);
+
+                }
+            }
+
+
+        });
 
     	and('the following matrix B:', (table) => {
-            pending();
-    	});
+
+            matrixB = new Matrix(table.length,table.length,0);
+
+            for (let row = 0; row < table.length; row++ ){
+
+                 for (let col = 0; col < table.length; col++ ){
+                    matrixB.matrix[row][col] = parseFloat(table[row.toString()][col]);
+
+                }
+            }
+
+
+        });
 
     	then('A != B', () => {
-            pending();
-    	});
+
+            expect(equalMatrices(matrixA,matrixB)).toBe(false);
+
+        });
+
+        test('Multiplying two matrices', ({ given, and, then }) => {
+
+            let matrixA: IMatrix;
+            let matrixB: IMatrix;
+            let matrixC: IMatrix;
+
+            given('the following matrix A:', (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                     for (let col = 0; col < table.length; col++ ){
+                        matrixA.matrix[row][col] = parseInt(table[row.toString()][col]);
+
+                    }
+                }
+
+
+
+            });
+
+            and("the following matrix B:", (table) => {
+
+                matrixB = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                     for (let col = 0; col < table.length; col++ ){
+                        matrixB.matrix[row][col] = parseInt(table[row.toString()][col]);
+
+                    }
+                }
+
+
+            });
+
+            then("A * B is the following 4x4 matrix:", (table) => {
+
+                const mockMatrix = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                     for (let col = 0; col < table.length; col++ ){
+                        mockMatrix.matrix[row][col] = parseInt(table[row.toString()][col]);
+
+                    }
+                }
+
+                matrixC = multiply(matrixA,matrixB);
+
+                expect(equalMatrices(matrixC,mockMatrix)).toBe(true);
+            });
+        });
+
+
+
     });
 });

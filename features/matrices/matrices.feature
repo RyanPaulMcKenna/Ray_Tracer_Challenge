@@ -19,8 +19,10 @@ Feature: Creating Matrices
 
 
     Scenario: A 2x2 matrix ought to be representable
+
         Given the following 2x2 matrix M:
 
+        | 0 |  1 |
         | -3 | 5 |
         | 1 | -2 |
 
@@ -31,11 +33,13 @@ Feature: Creating Matrices
 
 
     Scenario: A 3x3 matrix ought to be representable
+
         Given the following 3x3 matrix M:
 
-        |-3| 5| 0|
-        | 1|-2|-7|
-        |0 |1 |1 |
+        |  0 |  1 | 2  |
+        | -3 |  5 |  0 |
+        |  1 | -2 | -7 |
+        |  0 |  1 | 1  |
 
         Then M[0,0] = -3
         And M[1,1] = -2
@@ -44,6 +48,7 @@ Feature: Creating Matrices
     Scenario: Matrix equality with identical matrices
         Given the following matrix A:
 
+        |0|1|2|3|
         |1|2|3|4|
         |5|6|7|8|
         |9|8|7|6|
@@ -51,6 +56,7 @@ Feature: Creating Matrices
 
         And the following matrix B:
 
+        |0|1|2|3|
         |1|2|3|4|
         |5|6|7|8|
         |9|8|7|6|
@@ -61,6 +67,7 @@ Feature: Creating Matrices
     Scenario: Matrix equality with different matrices
         Given the following matrix A:
 
+        |0|1|2|3|
         |1|2|3|4|
         |5|6|7|8|
         |9|8|7|6|
@@ -68,9 +75,51 @@ Feature: Creating Matrices
 
         And the following matrix B:
 
+        |0|1|2|3|
         |2|3|4|5|
         |6|7|8|9|
         |8|7|6|5|
         |4|3|2|1|
 
         Then A != B
+
+
+Scenario: Multiplying two matrices
+
+    Given the following matrix A:
+
+    | 0 | 1 | 2 | 3 |
+    | 1 | 2 | 3 | 4 |
+    | 5 | 6 | 7 | 8 |
+    | 9 | 8 | 7 | 6 |
+    | 5 | 4 | 3 | 2 |
+
+    And the following matrix B:
+
+    |  0 | 1 | 2 |  3 |
+    | -2 | 1 | 2 |  3 |
+    |  3 | 2 | 1 | -1 |
+    |  4 | 3 | 6 |  5 |
+    |  1 | 2 | 7 |  8 |
+
+    Then A * B is the following 4x4 matrix:
+
+    |  0 |  1 |   2 |   3 |
+    | 20 | 22 |  50 |  48 |
+    | 44 | 54 | 114 | 108 |
+    | 40 | 58 | 110 | 102 |
+    | 16 | 26 |  46 |  42 |
+
+
+    Scenario: A matrix multiplied by a tuple
+
+        Given the following matrix A:
+
+        |0|1|2|3|
+        |1|2|3|4|
+        |2|4|4|2|
+        |8|6|4|1|
+        |0|0|0|1|
+
+        And b ← tuple(1, 2, 3, 1)
+        Then A * b = tuple(18, 24, 33, 1)
