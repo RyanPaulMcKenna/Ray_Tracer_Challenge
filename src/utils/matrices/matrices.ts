@@ -1,4 +1,5 @@
 import { Tuple } from "../functions/utils";
+import { number } from "prop-types";
 
 export interface IMatrix{
     asTuple(): Tuple;
@@ -122,6 +123,15 @@ export function determinant(mat: Matrix): number{
 
 }
 
+export function cofactor(a: IMatrix, row: number, column: number): number{
+
+    let signMatrix = [[1,-1,1],[-1,1,-1],[1,-1,1]];
+
+    let minorOfA = minor(a,row,column);
+
+    return minorOfA * signMatrix[row][column];
+
+}
 
 export function minor(a: IMatrix, row: number, column: number): number{
 

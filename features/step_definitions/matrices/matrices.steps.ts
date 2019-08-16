@@ -1,5 +1,5 @@
 import { loadFeature, defineFeature} from 'jest-cucumber';
-import { IMatrix, Matrix, equalMatrices, multiply, IdentityMatrix, transpose, determinant, submatrix, minor } from '../../../src/utils/matrices/matrices';
+import { IMatrix, Matrix, equalMatrices, multiply, IdentityMatrix, transpose, determinant, submatrix, minor, cofactor } from '../../../src/utils/matrices/matrices';
 import { ITuple, Tuple, equalTuples } from '../../../src/utils/functions/utils';
 
 const feature = loadFeature('../../matrices/matrices.feature', {loadRelativePath: true});
@@ -549,6 +549,114 @@ defineFeature(feature, (test) => {
                 expect(minorOfA).toEqual(parseInt(arg2));
 
 
+            });
+        });
+
+        test('Calculating a cofactor of a 3x3 matrix', ({ given, then, and }) => {
+
+            let matrixA: IMatrix;
+
+            given("the following 3x3 matrix A:", (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                   }
+               }
+
+            });
+
+            then(/^minor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+
+                let minorOfA = minor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(minorOfA).toEqual(parseInt(arg2));
+
+            });
+
+            and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+
+                let cofactorOfA = cofactor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(cofactorOfA).toEqual(parseInt(arg2));
+
+            });
+
+            and(/^minor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+
+                let minorOfA = minor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(minorOfA).toEqual(parseInt(arg2));
+
+            });
+
+            and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+
+                let cofactorOfA = cofactor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(cofactorOfA).toEqual(parseInt(arg2));
+            });
+        });
+
+        test('Calculating the determinant of a 3x3 matrix', ({ given, then, and }) => {
+            given("the following 3x3 matrix A:", (arg0, arg1, table) => {
+                pending();
+
+            });
+
+            then(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+                pending();
+
+            });
+
+            and(/^cofactor\(A, (.*), (.*)\) = (.*)(.*)$/, (arg0, arg1, arg2) => {
+                pending();
+
+            });
+
+            and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+                pending();
+
+            });
+
+            and(/^determinant\(A\) = (.*)$/, (arg0) => {
+                pending();
+
+            });
+        });
+
+        test('Calculating the determinant of a 4x4 matrix', ({ given, then, and }) => {
+            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
+                pending();
+
+            });
+
+            then(/^cofactor\(A, (.*), (.*)\) = (.*)(.*)$/, (arg0, arg1, arg2) => {
+                pending();
+
+            });
+
+            and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+                pending();
+
+            });
+
+            and(/^cofactor\(A, (.*), (.*)\) = (.*)(.*)(.*)$/, (arg0, arg1, arg2) => {
+                pending();
+
+            });
+
+            and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+                pending();
+
+            });
+
+            and(/^determinant\(A\) = (.*)$/, (arg0) => {
+                pending();
             });
         });
 
