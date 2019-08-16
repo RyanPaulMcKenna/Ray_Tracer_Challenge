@@ -1,3 +1,5 @@
+import { IMatrix, Matrix } from "../matrices/matrices";
+
 export function cross(a: Vector, b: Vector): Vector{
 
     return new Vector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
@@ -96,6 +98,7 @@ export class Colour implements IColour{
 }
 
 export interface ITuple {
+    asMatrix(): IMatrix;
 	divide(divisor: number): ITuple;
 	scale(scalar: number): ITuple;
 	negate(): ITuple;
@@ -113,9 +116,22 @@ export class Tuple implements ITuple {
         this.y = Y0;
         this.z = Z0;
         this.w = W0;
+
     }
 
     //Methods
+    public asMatrix(): IMatrix {
+
+        let matrix = new Matrix(4,1,0);
+
+        matrix.matrix[0][0] = this.x;
+        matrix.matrix[1][0] = this.y;
+        matrix.matrix[2][0] = this.z;
+        matrix.matrix[3][0] = this.w;
+
+        return matrix;
+    }
+
     public plus(tupleB: ITuple): ITuple {
         return new Tuple(this.x+tupleB.x,this.y+tupleB.y,this.z+tupleB.z,this.w+tupleB.w);
     }

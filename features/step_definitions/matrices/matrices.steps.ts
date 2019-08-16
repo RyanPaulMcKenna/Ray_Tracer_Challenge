@@ -1,5 +1,6 @@
 import { loadFeature, defineFeature} from 'jest-cucumber';
 import { IMatrix, Matrix, equalMatrices, multiply } from '../../../src/utils/matrices/matrices';
+import { ITuple, Tuple, equalTuples } from '../../../src/utils/functions/utils';
 
 const feature = loadFeature('../../matrices/matrices.feature', {loadRelativePath: true});
 
@@ -255,6 +256,41 @@ defineFeature(feature, (test) => {
             });
         });
 
+        test('A matrix multiplied by a tuple', ({ given, and, then }) => {
+
+            let matrixA: Matrix;
+            let tupleB: Tuple;
+            let tupleC: Tuple;
+
+            given('the following matrix A:', (table) => {
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                     for (let col = 0; col < table.length; col++ ){
+                        matrixA.matrix[row][col] = parseInt(table[row.toString()][col]);
+
+                    }
+                }
+
+            });
+
+            and(/^b = tuple\((.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+
+                tupleB = new Tuple(parseInt(arg0),parseInt(arg1),parseInt(arg2),parseInt(arg3));
+
+            });
+
+            then("a * b = tuple(18, 24, 33, 1)", () => {
+
+                let mockTuple: ITuple = new Tuple(18,24,33,1);
+
+                tupleC = multiply(matrixA,tupleB.asMatrix()).asTuple();
+
+               expect(equalTuples(mockTuple,tupleC)).toBe(true);
+
+            });
+        });
 
 
     });

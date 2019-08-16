@@ -1,11 +1,26 @@
-import { number } from "prop-types";
+import { ITuple, Tuple } from "../functions/utils";
 
 export interface IMatrix{
+    asTuple(): Tuple;
     matrix: number[][];
 }
 
 
 export class Matrix implements IMatrix{
+
+    asTuple(): Tuple{
+
+
+        if(this.matrix.length !== 4 && this.matrix[0].length !== 1)
+        {
+            throw new Error('Illegal operation: only column vectors of size 4 can be converted into type Tuple');
+        }
+
+
+
+        return new Tuple(this.matrix[0][0],this.matrix[1][0], this.matrix[2][0], this.matrix[3][0]);
+
+    }
     matrix: number[][];
 
     constructor(row: number, column: number, fill: number){
@@ -30,14 +45,33 @@ export class Matrix implements IMatrix{
 
 }
 
-export function equalMatrices(a: IMatrix, b: IMatrix): Boolean{
+export function equalMatrices(a: IMatrix | Tuple, b: IMatrix | Tuple): Boolean{
+
+    let matrixA: IMatrix;
+    let matrixB: IMatrix;
+
+    if(a instanceof Tuple){
+
+        matrixA = a.asMatrix();
+
+    }else{
+        matrixA = a;
+    }
+
+    if(b instanceof Tuple){
+
+        matrixB = b.asMatrix();
+
+    }else{
+        matrixB = b;
+    }
 
     // Check if size is equal first to avoid computation if possible
 
-    const rowA = a.matrix.length;
-    const rowB = b.matrix.length;
-    const colA = a.matrix[0].length;
-    const colB = b.matrix[0].length;
+    const rowA = matrixA.matrix.length;
+    const rowB = matrixB.matrix.length;
+    const colA = matrixA.matrix[0].length;
+    const colB = matrixB.matrix[0].length;
 
     if(rowA !== rowB){
         return false;
@@ -48,7 +82,7 @@ export function equalMatrices(a: IMatrix, b: IMatrix): Boolean{
 
     for (let row = 0; row < rowA; row++){
         for (let col = 0; col < colA; col++){
-            if(a.matrix[row][col] !== b.matrix[row][col] ){
+            if(matrixA.matrix[row][col] !== matrixB.matrix[row][col] ){
                 return false;
             }
         }
@@ -58,11 +92,12 @@ export function equalMatrices(a: IMatrix, b: IMatrix): Boolean{
 }
 
 
-export function multiply(a: IMatrix, b:IMatrix): IMatrix{
 
+
+
+export function multiply(a: IMatrix, b: IMatrix): IMatrix{
 
     let c: IMatrix = new Matrix(a.matrix.length, b.matrix[0].length, 0);
-
     let rowSize = a.matrix.length;
     let colSize = a.matrix[0].length;
 
@@ -94,12 +129,11 @@ export function multiply(a: IMatrix, b:IMatrix): IMatrix{
         ++colIndex;
         rowOffset = 0;
 
-        if(colIndex === rowSize)
+        if(colIndex === colSize)
             done = true;
 
     }
 
     return c;
-
 
 }
