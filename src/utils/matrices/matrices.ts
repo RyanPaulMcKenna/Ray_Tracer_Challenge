@@ -122,6 +122,13 @@ export function determinant(mat: Matrix): number{
 
 }
 
+
+export function minor(a: IMatrix, row: number, column: number): number{
+
+    return determinant(submatrix(a,row,column));
+
+}
+
 export function transpose(a: IMatrix): IMatrix{
 
     let transposeA: IMatrix = new Matrix(a.matrix.length,a.matrix[0].length,0);
@@ -135,6 +142,41 @@ export function transpose(a: IMatrix): IMatrix{
     return transposeA;
 }
 
+
+export function submatrix(mat: IMatrix, r: number, c: number): IMatrix{
+
+    let sub: IMatrix = new Matrix(mat.matrix.length-1, mat.matrix[0].length-1,0);
+
+    let subRow = 0;
+    let subCol = 0;
+
+    for(let row = 0; row < mat.matrix.length; row++){
+
+        for(let col = 0; col < mat.matrix[0].length; col++){
+
+            if(row !== r && col !== c){
+
+                sub.matrix[subRow][subCol] = mat.matrix[row][col];
+
+                if(subCol !== sub.matrix[0].length-1)
+                {
+                    ++subCol;
+
+                }else{
+
+                    subCol = 0;
+                    ++subRow;
+
+                }
+
+
+            }
+
+        }
+    }
+
+    return sub;
+}
 
 export function multiply(a: IMatrix, b: IMatrix): IMatrix{
 

@@ -1,5 +1,5 @@
 import { loadFeature, defineFeature} from 'jest-cucumber';
-import { IMatrix, Matrix, equalMatrices, multiply, IdentityMatrix, transpose, determinant } from '../../../src/utils/matrices/matrices';
+import { IMatrix, Matrix, equalMatrices, multiply, IdentityMatrix, transpose, determinant, submatrix, minor } from '../../../src/utils/matrices/matrices';
 import { ITuple, Tuple, equalTuples } from '../../../src/utils/functions/utils';
 
 const feature = loadFeature('../../matrices/matrices.feature', {loadRelativePath: true});
@@ -430,27 +430,125 @@ defineFeature(feature, (test) => {
         test('A submatrix of a 3x3 matrix is a 2x2 matrix', ({ given, then }) => {
 
             let matrixA: IMatrix;
+            let mockMatrix: IMatrix;
 
             given("the following 3x3 matrix A:", (table) => {
 
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                   }
+               }
 
 
             });
 
             then("submatrix\(A, 0, 2\) is the following 2x2 matrix:", (table) => {
 
+
+                mockMatrix = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                        mockMatrix.matrix[row][col] = parseInt(table[row][col]);
+
+                    }
+                }
+
+
+                let subMofA: IMatrix = submatrix(matrixA,0,2);
+
+                expect(equalMatrices(mockMatrix,subMofA)).toBe(true);
+
             });
         });
 
         test('A submatrix of a 4x4 matrix is a 3x3 matrix', ({ given, then }) => {
 
+            let matrixA: IMatrix;
+            let mockMatrix: IMatrix;
+
             given("the following 4x4 matrix A:", (table) => {
-                pending();
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                   }
+               }
 
             });
 
-            then(/^submatrix\(A, (.*), (.*)\) is the following 3x3 matrix:$/, (arg0, arg1, table) => {
-                pending();
+            then("submatrix(A, 2, 1) is the following 3x3 matrix:", (table) => {
+
+                mockMatrix = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                        mockMatrix.matrix[row][col] = parseInt(table[row][col]);
+
+                    }
+                }
+
+
+                let subMofA: IMatrix = submatrix(matrixA, 2,1);
+
+                expect(equalMatrices(mockMatrix,subMofA)).toBe(true);
+
+            });
+        });
+
+        test('Calculating a minor of a 3x3 matrix', ({ given, and, then }) => {
+
+            let matrixA: IMatrix;
+            let matrixB: IMatrix;
+            let determinantOfB: number;
+
+            given("the following 3x3 matrix A:", (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                   }
+               }
+
+
+            });
+
+            and(/^B = submatrix\(A, (.*), (.*)\)$/, (arg0, arg1) => {
+
+                matrixB = submatrix(matrixA, parseInt(arg0), parseInt(arg1));
+
+            });
+
+            then(/^determinant\(B\) = (.*)$/, (arg0) => {
+
+                determinantOfB = determinant(matrixB);
+
+                expect(determinantOfB).toEqual(parseInt(arg0));
+
+            });
+
+            and(/^minor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+
+                let minorOfA = minor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(minorOfA).toEqual(parseInt(arg2));
+
+
             });
         });
 
