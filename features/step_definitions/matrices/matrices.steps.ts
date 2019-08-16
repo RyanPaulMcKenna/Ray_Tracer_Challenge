@@ -1,5 +1,5 @@
 import { loadFeature, defineFeature} from 'jest-cucumber';
-import { IMatrix, Matrix, equalMatrices, multiply } from '../../../src/utils/matrices/matrices';
+import { IMatrix, Matrix, equalMatrices, multiply, IdentityMatrix, transpose, determinant } from '../../../src/utils/matrices/matrices';
 import { ITuple, Tuple, equalTuples } from '../../../src/utils/functions/utils';
 
 const feature = loadFeature('../../matrices/matrices.feature', {loadRelativePath: true});
@@ -294,25 +294,162 @@ defineFeature(feature, (test) => {
 
         test('Multiplying a matrix by the identity matrix', ({ given, then }) => {
 
+            let matrixA: Matrix;
+
             given('the following matrix A:', (table) => {
-                pending();
+
+                matrixA = new Matrix(table.length,4,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < 4; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col.toString()]);
+
+                   }
+               }
+
 
             });
 
             then('A * identity_matrix = A', () => {
-                pending();
+
+                let identityMatrix = new IdentityMatrix();
+                let identityOfA: Matrix = multiply(matrixA,identityMatrix);
+
+                expect(equalMatrices(matrixA,identityOfA)).toBe(true);
 
             });
         });
 
         test('Multiplying the identity matrix by a tuple', ({ given, then }) => {
 
+            let tupleA: Tuple
+
             given(/^a = tuple\((.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
-                pending();
+
+                tupleA = new Tuple(parseInt(arg0), parseInt(arg1), parseInt(arg2), parseInt(arg3));
+
 
             });
 
             then('identity_matrix * a = a', () => {
+
+                const identityMatrix = new IdentityMatrix();
+
+                const identityOfA = multiply(tupleA.asMatrix(),identityMatrix).asTuple();
+
+                expect(equalTuples(tupleA, identityOfA)).toBe(true);
+
+            });
+        });
+
+        test('Transposing a matrix', ({ given, then }) => {
+
+            let matrixA: IMatrix;
+            let mockTranspose: IMatrix;
+
+            given('the following matrix A:', (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                     for (let col = 0; col < table.length; col++ ){
+                        matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                    }
+                }
+            });
+
+            then('transpose(A) is the following matrix:', (table) => {
+                mockTranspose = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                     for (let col = 0; col < table.length; col++ ){
+                        mockTranspose.matrix[row][col] = parseInt(table[row][col]);
+
+                    }
+                }
+
+                let tranposeOfA: IMatrix = transpose(matrixA);
+
+                expect(equalMatrices(tranposeOfA,mockTranspose)).toBe(true);
+
+            });
+        });
+
+        test('Transposing the identity matrix', ({ given, then }) => {
+
+            let idMat: IMatrix = new IdentityMatrix();
+            let matrixA: IMatrix;
+
+            given('A = transpose(identity_matrix)', () => {
+                matrixA = transpose(idMat);
+            });
+
+            then('A = identity_matrix', () => {
+
+                expect(equalMatrices(idMat,matrixA)).toBe(true);
+
+            });
+
+        });
+
+
+        test('Calculating the determinant of a 2x2 matrix', ({ given, then }) => {
+
+            let matrixA: IMatrix;
+
+            given("the following 2x2 matrix A:", (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                   }
+               }
+
+
+            });
+
+            then(/^determinant\(A\) = (.*)$/, (arg0) => {
+
+                let mockDeterminant = parseInt(arg0);
+
+                let determinantOfA: number = determinant(matrixA);
+
+                expect(determinantOfA).toEqual(mockDeterminant);
+
+            });
+        });
+
+        test('A submatrix of a 3x3 matrix is a 2x2 matrix', ({ given, then }) => {
+
+            let matrixA: IMatrix;
+
+            given("the following 3x3 matrix A:", (table) => {
+
+
+
+            });
+
+            then("submatrix\(A, 0, 2\) is the following 2x2 matrix:", (table) => {
+
+            });
+        });
+
+        test('A submatrix of a 4x4 matrix is a 3x3 matrix', ({ given, then }) => {
+
+            given("the following 4x4 matrix A:", (table) => {
+                pending();
+
+            });
+
+            then(/^submatrix\(A, (.*), (.*)\) is the following 3x3 matrix:$/, (arg0, arg1, table) => {
                 pending();
             });
         });

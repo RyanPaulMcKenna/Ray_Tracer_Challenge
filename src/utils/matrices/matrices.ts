@@ -1,10 +1,25 @@
-import { ITuple, Tuple } from "../functions/utils";
+import { Tuple } from "../functions/utils";
 
 export interface IMatrix{
     asTuple(): Tuple;
     matrix: number[][];
 }
 
+
+export class IdentityMatrix implements IMatrix {
+
+    asTuple(): Tuple {
+        throw new Error("Method not implemented.");
+    }
+
+    constructor(){
+        this.matrix = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]];
+    }
+
+    matrix: number[][];
+
+
+}
 
 export class Matrix implements IMatrix{
 
@@ -91,8 +106,34 @@ export function equalMatrices(a: IMatrix | Tuple, b: IMatrix | Tuple): Boolean{
     return true;
 }
 
+export function determinant(mat: Matrix): number{
+
+    if(mat.matrix.length !== 2 || mat.matrix[0].length !== 2)
+        throw new Error('Illegal Operaton: This function can only be used on 2x2 matrices.');
 
 
+    let a = mat.matrix[0][0];
+    let b = mat.matrix[0][1];
+    let c = mat.matrix[1][0];
+    let d = mat.matrix[1][1];
+
+
+    return (a*d-b*c);
+
+}
+
+export function transpose(a: IMatrix): IMatrix{
+
+    let transposeA: IMatrix = new Matrix(a.matrix.length,a.matrix[0].length,0);
+
+    for(let row = 0; row < a.matrix.length; row++){
+        for(let col = 0; col < a.matrix[0].length; col++){
+            transposeA.matrix[col][row] = a.matrix[row][col];
+        }
+    }
+
+    return transposeA;
+}
 
 
 export function multiply(a: IMatrix, b: IMatrix): IMatrix{
