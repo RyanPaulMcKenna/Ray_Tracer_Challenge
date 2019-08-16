@@ -292,6 +292,31 @@ defineFeature(feature, (test) => {
             });
         });
 
+        test('Multiplying a matrix by the identity matrix', ({ given, then }) => {
+
+            given('the following matrix A:', (table) => {
+                pending();
+
+            });
+
+            then('A * identity_matrix = A', () => {
+                pending();
+
+            });
+        });
+
+        test('Multiplying the identity matrix by a tuple', ({ given, then }) => {
+
+            given(/^a = tuple\((.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+                pending();
+
+            });
+
+            then('identity_matrix * a = a', () => {
+                pending();
+            });
+        });
+
 
     });
 });

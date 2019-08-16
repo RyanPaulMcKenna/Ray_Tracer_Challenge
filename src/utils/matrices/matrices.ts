@@ -104,7 +104,6 @@ export function multiply(a: IMatrix, b: IMatrix): IMatrix{
     let colIndex = 0;
     let rowOffset = 0;
 
-
     let done = false;
 
     while(!done){
