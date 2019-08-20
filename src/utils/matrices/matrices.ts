@@ -1,4 +1,4 @@
-import { Tuple } from "../functions/utils";
+import { Tuple, equal } from "../functions/utils";
 import { number } from "prop-types";
 
 export interface IMatrix{
@@ -61,6 +61,37 @@ export class Matrix implements IMatrix{
 
 }
 
+export function inverse(a: IMatrix): IMatrix{
+
+    if( !isInvertible(a) )
+        throw new Error('Illegal operation: Matrices with a determinant of zero are not invertible');
+
+        let matrixA = new Matrix(a.matrix.length, a.matrix[0].length,0);
+
+    for (let row = 0; row < a.matrix.length; row++){
+
+        for (let col = 0; col < a.matrix[0].length; col++){
+
+            let c = cofactor(a, row, col)
+            matrixA.matrix[col][row] = c / determinant(a);
+
+        }
+    }
+
+    return matrixA;
+}
+
+export function isInvertible(a: IMatrix): Boolean{
+
+    if(determinant(a) === 0){
+
+        return false;
+
+    }
+
+    return true;
+}
+
 export function equalMatrices(a: IMatrix | Tuple, b: IMatrix | Tuple): Boolean{
 
     let matrixA: IMatrix;
@@ -98,7 +129,7 @@ export function equalMatrices(a: IMatrix | Tuple, b: IMatrix | Tuple): Boolean{
 
     for (let row = 0; row < rowA; row++){
         for (let col = 0; col < colA; col++){
-            if(matrixA.matrix[row][col] !== matrixB.matrix[row][col] ){
+            if(!equal(matrixA.matrix[row][col] , matrixB.matrix[row][col]) ){
                 return false;
             }
         }

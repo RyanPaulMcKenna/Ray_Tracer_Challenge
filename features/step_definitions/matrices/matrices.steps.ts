@@ -1,6 +1,6 @@
 import { loadFeature, defineFeature} from 'jest-cucumber';
-import { IMatrix, Matrix, equalMatrices, multiply, IdentityMatrix, transpose, determinant, submatrix, minor, cofactor } from '../../../src/utils/matrices/matrices';
-import { ITuple, Tuple, equalTuples } from '../../../src/utils/functions/utils';
+import { IMatrix, Matrix, equalMatrices, multiply, IdentityMatrix, transpose, determinant, submatrix, minor, cofactor, isInvertible, inverse } from '../../../src/utils/matrices/matrices';
+import { ITuple, Tuple, equalTuples, equal } from '../../../src/utils/functions/utils';
 
 const feature = loadFeature('../../matrices/matrices.feature', {loadRelativePath: true});
 
@@ -713,17 +713,32 @@ defineFeature(feature, (test) => {
         });
 
         test('Testing an invertible matrix for invertibility', ({ given, then, and }) => {
-            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
-                pending()
+
+            let matrixA: IMatrix;
+
+            given(/^the following 4x4 matrix A:$/, (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                   }
+               }
+
             });
 
             then(/^determinant\(A\) = (.*)$/, (arg0) => {
-                pending()
+
+                expect(determinant(matrixA)).toEqual(parseInt(arg0));
 
             });
 
             and('A is invertible', () => {
-                pending()
+
+                expect(isInvertible(matrixA)).toBe(true);
 
             });
         });
@@ -731,18 +746,33 @@ defineFeature(feature, (test) => {
 
 
         test('Testing a noninvertible matrix for invertibility', ({ given, then, and }) => {
-            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
-                pending()
+
+            let matrixA: IMatrix;
+
+            given(/^the following 4x4 matrix A:$/, (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                   }
+               }
 
             });
 
             then(/^determinant\(A\) = (.*)$/, (arg0) => {
-                pending()
+
+                expect(determinant(matrixA)).toEqual(parseInt(arg0));
 
             });
 
             and('A is not invertible', () => {
-                pending()
+
+                expect(isInvertible(matrixA)).toBe(false);
+
 
             });
         });
@@ -750,45 +780,76 @@ defineFeature(feature, (test) => {
 
 
         test('Calculating the inverse of a matrix', ({ given, and, then }) => {
-            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
-                pending()
+
+            let matrixA: IMatrix;
+            let matrixB: IMatrix;
+
+
+            given(/^the following 4x4 matrix A:$/, (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                   }
+               }
 
             });
 
             and('B = inverse(A)', () => {
-                pending()
+                 matrixB = inverse(matrixA);
 
             });
 
             then(/^determinant\(A\) = (.*)$/, (arg0) => {
-                pending()
+
+                expect(determinant(matrixA)).toEqual(parseInt(arg0));
 
             });
 
             and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
-                pending()
+
+
+                expect(cofactor(matrixA, parseInt(arg0), parseInt(arg1))).toEqual(parseInt(arg2));
 
             });
 
-            and(/^B[(.*),(.*)] = (.*)(.*)(.*)(.*)$/, (arg0, arg1, arg2, arg3) => {
+            and("B[3,2] = -160/532", () => {
 
-                pending()
+                expect(equal(matrixB.matrix[3][2], -160/532));
 
             });
 
             and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
-                pending()
+
+                expect(cofactor(matrixA, parseInt(arg0), parseInt(arg1))).toEqual(parseInt(arg2));
 
             });
 
-            and(/^B[(.*),(.*)] = (.*)(.*)(.*)(.*)$/, (arg0, arg1, arg2, arg3) => {
+            and("B[2,3] = 105/532", () => {
 
-                pending()
+                expect(equal(matrixB.matrix[3][2], 105/532));
+
 
             });
 
-            and(/^B is the following (.*)x(.*) matrix:$/, (arg0, arg1, table) => {
-                pending()
+            and(/^B is the following 4x4 matrix:$/, (table) => {
+
+                let mockInverse: IMatrix;
+                mockInverse = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       mockInverse.matrix[row][col] = parseFloat(table[row.toString()][col]);
+
+                   }
+               }
+
+               expect(equalMatrices(matrixB,mockInverse)).toBe(true);
 
             });
         });
@@ -796,13 +857,39 @@ defineFeature(feature, (test) => {
 
 
         test('Calculating the inverse of another matrix', ({ given, then }) => {
-            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
-                pending()
+
+            let matrixA: IMatrix;
+            let inverseA: IMatrix;
+
+            given(/^the following 4x4 matrix A:$/, (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row.toString()][col]);
+
+                   }
+               }
 
             });
 
-            then(/^inverse\(A\) is the following (.*)x(.*) matrix:$/, (arg0, arg1, table) => {
-                pending()
+            then(/^inverse\(A\) is the following 4x4 matrix:$/, (table) => {
+
+                let mockInverseA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       mockInverseA.matrix[row][col] = parseFloat(table[row.toString()][col]);
+
+                   }
+               }
+
+               inverseA = inverse(matrixA);
+
+               expect(equalMatrices(mockInverseA,inverseA)).toBe(true);
 
             });
         });
@@ -810,37 +897,86 @@ defineFeature(feature, (test) => {
 
 
         test('Calculating the inverse of a third matrix', ({ given, then }) => {
-            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
-                pending()
+
+            let matrixA: IMatrix;
+            let mockMatrix: IMatrix;
+
+            given(/^the following 4x4 matrix A:$/, (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseFloat(table[row.toString()][col]);
+
+                   }
+               }
 
             });
 
-            then(/^inverse\(A\) is the following (.*)x(.*) matrix:$/, (arg0, arg1, table) => {
-                pending()
+            then(/^inverse\(A\) is the following 4x4 matrix:$/, (table) => {
 
+                mockMatrix= new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       mockMatrix.matrix[row][col] = parseFloat(table[row.toString()][col]);
+
+                   }
+               }
+
+               let matrixC = inverse(matrixA);
+
+               expect(equalMatrices(matrixC, mockMatrix)).toBe(true);
             });
         });
 
-
-
         test('Multiplying a product by its inverse', ({ given, and, then }) => {
-            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
-                pending()
 
+           let matrixA: IMatrix;
+           let matrixB: IMatrix;
+           let matrixC: IMatrix;
+
+            given(/^the following 4x4 matrix A:$/, (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row.toString()][col]);
+
+                   }
+               }
             });
 
-            and(/^the following (.*)x(.*) matrix B: |(.*)|(.*)|(.*)|(.*)|$/, (arg0, arg1, arg2, arg3, arg4, arg5, table) => {
-                pending()
+            and(/^the following 4x4 matrix B:$/, (table) => {
 
+                matrixB = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixB.matrix[row][col] = parseInt(table[row.toString()][col]);
+
+                   }
+               }
             });
 
-            and('C ← A * B', () => {
-                pending()
+            and('C = A * B', () => {
+
+                matrixC = multiply(matrixA, matrixB);
 
             });
 
             then('C * inverse(B) = A', () => {
-                pending()
+
+
+                let shouldBeA = multiply(matrixC, inverse(matrixB));
+
+                expect(equalMatrices(shouldBeA, matrixA)).toBe(true);
 
             });
         });
