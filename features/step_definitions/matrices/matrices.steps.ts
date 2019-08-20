@@ -603,60 +603,245 @@ defineFeature(feature, (test) => {
         });
 
         test('Calculating the determinant of a 3x3 matrix', ({ given, then, and }) => {
-            given("the following 3x3 matrix A:", (arg0, arg1, table) => {
-                pending();
+
+            let matrixA: IMatrix;
+
+            given("the following 3x3 matrix A:", (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                   }
+               }
+
 
             });
 
             then(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
-                pending();
+
+                let cofactorOfA: number = cofactor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(cofactorOfA).toEqual(parseInt(arg2));
 
             });
 
             and(/^cofactor\(A, (.*), (.*)\) = (.*)(.*)$/, (arg0, arg1, arg2) => {
-                pending();
+
+                let cofactorOfA: number = cofactor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(cofactorOfA).toEqual(parseInt(arg2));
 
             });
 
             and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
-                pending();
+
+                let cofactorOfA: number = cofactor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(cofactorOfA).toEqual(parseInt(arg2));
 
             });
 
             and(/^determinant\(A\) = (.*)$/, (arg0) => {
-                pending();
+
+                let determinantOfA = determinant(matrixA);
+
+                expect(determinantOfA).toEqual(parseInt(arg0));
 
             });
         });
 
         test('Calculating the determinant of a 4x4 matrix', ({ given, then, and }) => {
-            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
-                pending();
+
+            let matrixA: IMatrix;
+
+            given(/^the following 4x4 matrix A:$/, (table) => {
+
+                matrixA = new Matrix(table.length,table.length,0);
+
+                for (let row = 0; row < table.length; row++ ){
+
+                    for (let col = 0; col < table.length; col++ ){
+                       matrixA.matrix[row][col] = parseInt(table[row][col]);
+
+                   }
+               }
 
             });
 
             then(/^cofactor\(A, (.*), (.*)\) = (.*)(.*)$/, (arg0, arg1, arg2) => {
-                pending();
+
+                let cofactorOfA: number = cofactor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(cofactorOfA).toEqual(parseInt(arg2));
 
             });
 
             and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
-                pending();
+
+                let cofactorOfA: number = cofactor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(cofactorOfA).toEqual(parseInt(arg2));
 
             });
 
             and(/^cofactor\(A, (.*), (.*)\) = (.*)(.*)(.*)$/, (arg0, arg1, arg2) => {
-                pending();
+
+                let cofactorOfA: number = cofactor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(cofactorOfA).toEqual(parseInt(arg2));
 
             });
 
             and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
-                pending();
+
+                let cofactorOfA: number = cofactor(matrixA, parseInt(arg0), parseInt(arg1));
+
+                expect(cofactorOfA).toEqual(parseInt(arg2));
 
             });
 
             and(/^determinant\(A\) = (.*)$/, (arg0) => {
-                pending();
+
+                let determinantOfA = determinant(matrixA);
+
+                expect(determinantOfA).toEqual(parseInt(arg0));
+            });
+        });
+
+        test('Testing an invertible matrix for invertibility', ({ given, then, and }) => {
+            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
+                pending()
+            });
+
+            then(/^determinant\(A\) = (.*)$/, (arg0) => {
+                pending()
+
+            });
+
+            and('A is invertible', () => {
+                pending()
+
+            });
+        });
+
+
+
+        test('Testing a noninvertible matrix for invertibility', ({ given, then, and }) => {
+            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
+                pending()
+
+            });
+
+            then(/^determinant\(A\) = (.*)$/, (arg0) => {
+                pending()
+
+            });
+
+            and('A is not invertible', () => {
+                pending()
+
+            });
+        });
+
+
+
+        test('Calculating the inverse of a matrix', ({ given, and, then }) => {
+            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
+                pending()
+
+            });
+
+            and('B = inverse(A)', () => {
+                pending()
+
+            });
+
+            then(/^determinant\(A\) = (.*)$/, (arg0) => {
+                pending()
+
+            });
+
+            and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+                pending()
+
+            });
+
+            and(/^B[(.*),(.*)] = (.*)(.*)(.*)(.*)$/, (arg0, arg1, arg2, arg3) => {
+
+                pending()
+
+            });
+
+            and(/^cofactor\(A, (.*), (.*)\) = (.*)$/, (arg0, arg1, arg2) => {
+                pending()
+
+            });
+
+            and(/^B[(.*),(.*)] = (.*)(.*)(.*)(.*)$/, (arg0, arg1, arg2, arg3) => {
+
+                pending()
+
+            });
+
+            and(/^B is the following (.*)x(.*) matrix:$/, (arg0, arg1, table) => {
+                pending()
+
+            });
+        });
+
+
+
+        test('Calculating the inverse of another matrix', ({ given, then }) => {
+            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
+                pending()
+
+            });
+
+            then(/^inverse\(A\) is the following (.*)x(.*) matrix:$/, (arg0, arg1, table) => {
+                pending()
+
+            });
+        });
+
+
+
+        test('Calculating the inverse of a third matrix', ({ given, then }) => {
+            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
+                pending()
+
+            });
+
+            then(/^inverse\(A\) is the following (.*)x(.*) matrix:$/, (arg0, arg1, table) => {
+                pending()
+
+            });
+        });
+
+
+
+        test('Multiplying a product by its inverse', ({ given, and, then }) => {
+            given(/^the following (.*)x(.*) matrix A:$/, (arg0, arg1, table) => {
+                pending()
+
+            });
+
+            and(/^the following (.*)x(.*) matrix B: |(.*)|(.*)|(.*)|(.*)|$/, (arg0, arg1, arg2, arg3, arg4, arg5, table) => {
+                pending()
+
+            });
+
+            and('C ← A * B', () => {
+                pending()
+
+            });
+
+            then('C * inverse(B) = A', () => {
+                pending()
+
             });
         });
 

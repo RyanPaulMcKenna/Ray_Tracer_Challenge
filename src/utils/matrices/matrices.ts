@@ -109,27 +109,41 @@ export function equalMatrices(a: IMatrix | Tuple, b: IMatrix | Tuple): Boolean{
 
 export function determinant(mat: Matrix): number{
 
-    if(mat.matrix.length !== 2 || mat.matrix[0].length !== 2)
-        throw new Error('Illegal Operaton: This function can only be used on 2x2 matrices.');
+    let det: number = 0;
+
+    if(mat.matrix.length === 2 && mat.matrix[0].length === 2)
+    {
+        let a = mat.matrix[0][0];
+        let b = mat.matrix[0][1];
+        let c = mat.matrix[1][0];
+        let d = mat.matrix[1][1];
+
+        det = a*d-b*c;
+
+        return (det);
+    }
 
 
-    let a = mat.matrix[0][0];
-    let b = mat.matrix[0][1];
-    let c = mat.matrix[1][0];
-    let d = mat.matrix[1][1];
+    for(let col = 0; col < mat.matrix.length; col++){
 
+        det += mat.matrix[0][col] * cofactor(mat, 0, col);
 
-    return (a*d-b*c);
+    }
+
+    return det;
+
 
 }
 
 export function cofactor(a: IMatrix, row: number, column: number): number{
 
-    let signMatrix = [[1,-1,1],[-1,1,-1],[1,-1,1]];
+    let sign = 1;
+    if( (row+column)%2 !== 0 )
+        sign = -1;
 
     let minorOfA = minor(a,row,column);
 
-    return minorOfA * signMatrix[row][column];
+    return minorOfA * sign;
 
 }
 
@@ -155,7 +169,7 @@ export function transpose(a: IMatrix): IMatrix{
 
 export function submatrix(mat: IMatrix, r: number, c: number): IMatrix{
 
-    let sub: IMatrix = new Matrix(mat.matrix.length-1, mat.matrix[0].length-1,0);
+    let sub: IMatrix = new Matrix(mat.matrix.length-1, mat.matrix[0].length-1, 0);
 
     let subRow = 0;
     let subCol = 0;
