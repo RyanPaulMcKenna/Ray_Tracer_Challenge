@@ -1,7 +1,7 @@
 import { loadFeature, defineFeature} from 'jest-cucumber';
 import { Point, equalTuples, ITuple, Vector } from '../../../src/utils/functions/utils';
 import { IMatrix, multiply, equalMatrices, inverse } from '../../../src/utils/matrices/matrices';
-import { Translation, Scaling, Rotation_X, Rotation_Y, Rotation_Z } from '../../../src/utils/transformations/transformations';
+import { Translation, Scaling, Rotation_X, Rotation_Y, Rotation_Z, Shearing } from '../../../src/utils/transformations/transformations';
 
 const feature = loadFeature('../../transformations/transformations.feature', {loadRelativePath: true});
 
@@ -391,5 +391,246 @@ defineFeature(feature, (test) => {
     	});
     });
 
+
+    test('A shearing transformation moves x in proportion to y', ({ given, and, then }) => {
+
+        let transform: IMatrix;
+        let pointP: Point;
+
+    	given(/^transform = shearing\((.*), (.*), (.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3, arg4, arg5) => {
+
+            transform = new Shearing( parseInt(arg0), parseInt(arg1),parseInt(arg2),parseInt(arg3),parseInt(arg4),parseInt(arg5));
+    	});
+
+    	and(/^p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            pointP = new Point(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+    	});
+
+    	then("transform * p = point(5, 3, 4)", () => {
+
+            let mockTransformation = new Point( 5,3,4);
+
+            let transformation = multiply(transform, pointP.asMatrix()).asTuple();
+
+            expect(equalTuples(mockTransformation, transformation)).toBe(true);
+
+
+    	});
+    });
+
+    test('A shearing transformation moves x in proportion to z', ({ given, and, then }) => {
+
+
+        let transform: IMatrix;
+        let pointP: Point;
+
+    	given(/^transform = shearing\((.*), (.*), (.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3, arg4, arg5) => {
+
+            transform = new Shearing( parseInt(arg0), parseInt(arg1),parseInt(arg2),parseInt(arg3),parseInt(arg4),parseInt(arg5));
+
+    	});
+
+    	and(/^p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            pointP = new Point(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+    	});
+
+    	then("transform * p = point(6, 3, 4)", () => {
+
+            let mockTransformation = multiply(transform, pointP.asMatrix()).asTuple();
+            let transformation = new Point(6,3,4);
+
+            expect(equalTuples(mockTransformation, transformation)).toBe(true);
+
+    	});
+    });
+
+    test('A shearing transformation moves y in proportion to x', ({ given, and, then }) => {
+
+
+        let transform: IMatrix;
+        let pointP: Point;
+
+    	given(/^transform = shearing\((.*), (.*), (.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3, arg4, arg5) => {
+
+            transform = new Shearing( parseInt(arg0), parseInt(arg1),parseInt(arg2),parseInt(arg3),parseInt(arg4),parseInt(arg5));
+
+    	});
+
+    	and(/^p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            pointP = new Point(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+    	});
+
+    	then("transform * p = point(2, 5, 4)", () => {
+
+            let mockTransformation = multiply(transform, pointP.asMatrix()).asTuple();
+            let transformation = new Point(2,5,4);
+
+
+            expect(equalTuples(mockTransformation, transformation)).toBe(true);
+
+    	});
+    });
+
+    test('A shearing transformation moves y in proportion to z', ({ given, and, then }) => {
+
+        let transform: IMatrix;
+        let pointP: Point;
+
+    	given(/^transform = shearing\((.*), (.*), (.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3, arg4, arg5) => {
+
+            transform = new Shearing( parseInt(arg0), parseInt(arg1),parseInt(arg2),parseInt(arg3),parseInt(arg4),parseInt(arg5));
+
+
+    	});
+
+    	and(/^p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            pointP = new Point(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+    	});
+
+    	then("transform * p = point(2, 7, 4)", () => {
+
+            let mockTransformation = multiply(transform, pointP.asMatrix()).asTuple();
+            let transformation = new Point(2,7,4);
+
+
+            expect(equalTuples(mockTransformation, transformation)).toBe(true);
+    	});
+    });
+
+    test('A shearing transformation moves z in proportion to x', ({ given, and, then }) => {
+
+
+        let transform: IMatrix;
+        let pointP: Point;
+
+    	given(/^transform = shearing\((.*), (.*), (.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3, arg4, arg5) => {
+
+            transform = new Shearing( parseInt(arg0), parseInt(arg1),parseInt(arg2),parseInt(arg3),parseInt(arg4),parseInt(arg5));
+
+
+    	});
+
+    	and(/^p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+
+            pointP = new Point(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+
+    	});
+
+    	then("transform * p = point(2, 3, 6)", () => {
+
+            let mockTransformation = multiply(transform, pointP.asMatrix()).asTuple();
+            let transformation = new Point(2,3,6);
+
+
+            expect(equalTuples(mockTransformation, transformation)).toBe(true);
+    	});
+    });
+
+    test('A shearing transformation moves z in proportion to y', ({ given, and, then }) => {
+
+        let transform: IMatrix;
+        let pointP: Point;
+
+    	given(/^transform = shearing\((.*), (.*), (.*), (.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3, arg4, arg5) => {
+
+            transform = new Shearing( parseInt(arg0), parseInt(arg1),parseInt(arg2),parseInt(arg3),parseInt(arg4),parseInt(arg5));
+
+    	});
+
+    	and(/^p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            pointP = new Point(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+
+    	});
+
+    	then("transform * p = point(2, 3, 7)", () => {
+
+            let mockTransformation = multiply(transform, pointP.asMatrix()).asTuple();
+            let transformation = new Point(2,3,7);
+
+
+            expect(equalTuples(mockTransformation, transformation)).toBe(true);
+
+        });
+    });
+
+    test('Individual transformations are applied in sequence', ({ given, and, when, then }) => {
+    	given(/^p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+    	});
+
+    	and(/^A = rotation_x\(π \/ (.*)\)$/, (arg0) => {
+
+    	});
+
+    	and(/^B = scaling\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+    	});
+
+    	and(/^C = translation\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+    	});
+
+    	when(/^p(.*) = A * p$/, (arg0) => {
+
+    	});
+
+    	then(/^p(.*) = point\((.*), -(.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+
+    	});
+
+    	when(/^p(.*) = B * p(.*)$/, (arg0, arg1) => {
+
+    	});
+
+    	then(/^p(.*) = point\((.*), -(.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+
+    	});
+
+    	when(/^p(.*) = C * p(.*)$/, (arg0, arg1) => {
+
+    	});
+
+    	then(/^p(.*) = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+
+    	});
+    });
+
+    test('Chained transformations must be applied in reverse order', ({ given, and, when, then }) => {
+    	given(/^p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+    	});
+
+    	and(/^A = rotation_x\(π \/ (.*)\)$/, (arg0) => {
+
+    	});
+
+    	and(/^B = scaling\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+    	});
+
+    	and(/^C = translation\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+    	});
+
+    	when('T = C * B * A', () => {
+
+    	});
+
+    	then(/^T * p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+    	});
+    });
 
 });

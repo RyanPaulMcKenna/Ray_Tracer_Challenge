@@ -73,29 +73,19 @@ export class Rotation_Z extends IdentityMatrix{
 }
 
 
+export class Shearing extends IdentityMatrix{
+    constructor(xy: number, xz: number, yx: number, yz: number, zx: number, zy: number){
+        super();
 
-//NOT IMPLEMENTED
+        this.matrix[0][1] = xy;
+        this.matrix[0][2] = xz;
 
-//x in proportion to y •
-//x in proportion to z •
-//y in proportion to x •
-//y in proportion to z •
-//z in proportion to x •
-//z in proportion to y
+        this.matrix[1][0] = yx;
+        this.matrix[1][2] = yz;
 
-// export class Shearing extends IdentityMatrix{
-//     constructor(){
-//         super();
-
-//         this.matrix[0][1] =
-//         this.matrix[0][2] =
-
-//         this.matrix[1][0] =
-//         this.matrix[1][2] =
-
-//         this.matrix[2][0] =
-//         this.matrix[2][1] =
-//     }
+        this.matrix[2][0] = zx;
+        this.matrix[2][1] = zy;
+    }
 
 
-// }
+}
