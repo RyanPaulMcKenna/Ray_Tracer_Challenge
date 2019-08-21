@@ -1,5 +1,4 @@
 import { Tuple, equal } from "../functions/utils";
-import { number } from "prop-types";
 
 export interface IMatrix{
     asTuple(): Tuple;

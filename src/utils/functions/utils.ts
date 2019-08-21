@@ -12,7 +12,6 @@ export function dot(a: Vector, b: Vector): number{
 
 export function equal(a: number, b: number): Boolean{
 
-
     let EPSILON = 0.00001;
     let diff = a -b;
 
