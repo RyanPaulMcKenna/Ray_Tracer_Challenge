@@ -176,19 +176,19 @@ Feature: Creating transformations
 
         # apply rotation first
 
-        When p2 = A * p
+        When pTwo = A * p
 
-        Then p2 = point(1, -1, 0)
+        Then pTwo = point(1, -1, 0)
         # then apply scaling
 
-        When p3 = B * p2
+        When pThree = B * pTwo
 
-        Then p3 = point(5, -5, 0) /
+        Then pThree = point(5, -5, 0)
         #then apply translation
 
-        When p4 = C * p3
+        When pFour = C * pThree
 
-        Then p4 = point(15, 0, 7)
+        Then pFour = point(15, 0, 7)
 
 
     Scenario: Chained transformations must be applied in reverse order

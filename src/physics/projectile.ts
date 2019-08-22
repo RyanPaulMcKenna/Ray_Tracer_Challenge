@@ -28,12 +28,8 @@ export class Environment implements IEnvironment{
 }
 
 export function tick(env: Environment, proj: Projectile): Projectile{
-
-    console.log('start',proj.position);
     let position = proj.position.plus(proj.velocity);
     let velocity = proj.velocity.plus(env.gravity).plus(env.wind);
-
-    console.log('end',position);
 
     return new Projectile(position, velocity);
 

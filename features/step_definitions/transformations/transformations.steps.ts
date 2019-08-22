@@ -566,71 +566,132 @@ defineFeature(feature, (test) => {
     });
 
     test('Individual transformations are applied in sequence', ({ given, and, when, then }) => {
+
+        let pointP: Point;
+        let pTwo: Point;
+        let pThree: Point;
+        let pFour: Point;
+        let A: IMatrix;
+        let B: IMatrix;
+        let C: IMatrix;
+
+
+
     	given(/^p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            pointP = new Point(parseInt(arg0),parseInt(arg1),parseInt(arg2));
 
     	});
 
     	and(/^A = rotation_x\(π \/ (.*)\)$/, (arg0) => {
 
+            A = new Rotation_X(Math.PI / parseInt(arg0));
+
     	});
 
     	and(/^B = scaling\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            B = new Scaling(parseInt(arg0),parseInt(arg1),parseInt(arg2))
 
     	});
 
     	and(/^C = translation\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
 
-    	});
-
-    	when(/^p(.*) = A * p$/, (arg0) => {
+            C = new Translation(parseInt(arg0),parseInt(arg1),parseInt(arg2));
 
     	});
 
-    	then(/^p(.*) = point\((.*), -(.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+    	when("pTwo = A * p", () => {
+
+            pTwo = multiply(A, pointP.asMatrix()).asTuple();
 
     	});
 
-    	when(/^p(.*) = B * p(.*)$/, (arg0, arg1) => {
+    	then(/^pTwo = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            let mockPtwo = new Point(parseInt(arg0), parseInt(arg1), parseInt(arg2));
+
+            expect(equalTuples(mockPtwo, pTwo)).toBe(true);
 
     	});
 
-    	then(/^p(.*) = point\((.*), -(.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+    	when("pThree = B * pTwo", () => {
+
+            pThree = multiply(B, pTwo.asMatrix()).asTuple();
 
     	});
 
-    	when(/^p(.*) = C * p(.*)$/, (arg0, arg1) => {
+    	then(/^pThree = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            let mockPthree = new Point(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+            expect(equalTuples(mockPthree, pThree)).toBe(true);
 
     	});
 
-    	then(/^p(.*) = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2, arg3) => {
+    	when("pFour = C * pThree", () => {
+
+            pFour = multiply(C, pThree.asMatrix()).asTuple();
+
+    	});
+
+    	then(/^pFour = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            let mockPfour = new Point(parseInt(arg0),parseInt(arg1),parseInt(arg2));
+
+            expect(equalTuples(mockPfour, pFour)).toBe(true);
 
     	});
     });
 
     test('Chained transformations must be applied in reverse order', ({ given, and, when, then }) => {
+
+        let pointP: Point;
+        let A: IMatrix;
+        let B: IMatrix;
+        let C: IMatrix;
+        let T: IMatrix;
+
     	given(/^p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            pointP = new Point(parseInt(arg0), parseInt(arg1), parseInt(arg2));
 
     	});
 
     	and(/^A = rotation_x\(π \/ (.*)\)$/, (arg0) => {
 
+            A = new Rotation_X(Math.PI / parseInt(arg0));
+
     	});
 
     	and(/^B = scaling\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+
+            B = new Scaling(parseInt(arg0), parseInt(arg1), parseInt(arg2));
 
     	});
 
     	and(/^C = translation\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
 
+            C = new Translation(parseInt(arg0), parseInt(arg1), parseInt(arg2));
+
     	});
 
     	when('T = C * B * A', () => {
 
-    	});
-
-    	then(/^T * p = point\((.*), (.*), (.*)\)$/, (arg0, arg1, arg2) => {
+            T = multiply( C, multiply(B,A) );
 
     	});
+
+    	then("T * p = point(15, 0, 7)", () => {
+
+            let mockTransformation = new Point(15, 0, 7);
+
+            let transformation = multiply(T, pointP.asMatrix()).asTuple();
+
+            expect(equalTuples(mockTransformation, transformation)).toBe(true);
+
+        });
+
     });
 
 });
